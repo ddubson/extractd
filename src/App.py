@@ -1,6 +1,24 @@
 import sys
 import getopt
 import paramiko
+import signal
+
+ssh = paramiko.SSHClient()
+
+def repl(ssh):
+    while True:
+        com = raw_input("$> ")
+        if com == 'quit':
+            signal_handler('', '')
+
+        stdin, stdout, stderr = ssh.exec_command(com)
+        print stdout.readlines()
+
+
+def signal_handler(signal, frame):
+    ssh.close()
+    print('\nExited successfully.')
+    sys.exit(0)
 
 
 def main(argv):
@@ -25,12 +43,10 @@ def main(argv):
         elif opt in ("-p", "--password"):
             password = arg
 
-    ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostname=host, username=user, password=password)
-    stdin, stdout, stderr = ssh.exec_command("uptime")
-    print stdout.readlines()
-
+    repl(ssh)
 
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, signal_handler)
     main(sys.argv[1:])
