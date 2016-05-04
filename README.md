@@ -1,14 +1,18 @@
 [![Build Status](https://travis-ci.org/ddubson/extractd.svg?branch=master)](https://travis-ci.org/ddubson/extractd)
 
-### Pre-requisites
+### How to build
 
 - Python 2.7.x (tested on Python 2.7.11)
-- [sshtunnel](https://pypi.python.org/pypi/sshtunnel) module
+- Just run `make` to aggregate all the dependencies needed
 
 ### Usage
 
 ```bash
-> python src/extractd.py --host <hostIP> --username <username> --password <password>
+> python extractd/extractd.py --host <hostIP> --username <username> --password <password>
 ```
+
+### Executing tests
+
+Run `make test` to execute the test suite located in tests directory
 
 
