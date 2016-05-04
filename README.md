@@ -5,7 +5,7 @@
 
 ### Usage
 
-```python
+```bash
 > python src/extractd.py --host <hostIP> --username <username> --password <password>
 ```
 
