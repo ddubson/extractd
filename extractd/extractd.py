@@ -6,7 +6,6 @@ from arg_reader import ArgReader
 
 ssh = paramiko.SSHClient()
 
-
 def repl(ssh, host):
     while True:
         com = raw_input(host + " $> ")
