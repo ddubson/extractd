@@ -15,7 +15,11 @@ def repl(ssh, host):
             signal_handler('', '')
 
         stdin, stdout, stderr = ssh.exec_command(com)
-        print stdout.readlines()
+
+        if com == 'hostname':
+            print stdout.read()
+        else:
+            print stdout.readlines()
 
 
 def signal_handler(signal, frame):
@@ -28,9 +32,9 @@ def main(argv):
     args = ArgReader()
     args.read(argv)
     server = Server(args.host, args.user, args.password)
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     try:
         print "Attempting to connect to " + server.host
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname=server.host, username=server.username, password=server.password)
     except socket.error, e:
         print "Could not connect to server"
