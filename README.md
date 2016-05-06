@@ -6,9 +6,14 @@
 - Just run `make` to aggregate all the dependencies needed
 
 ### Usage
-
+Via make
 ```bash
-> python extractd/extractd.py --host <hostIP> --username <username> --password <password>
+> make run host=<hostIP> user=<username> password=<password>
+```
+
+Natively
+```bash
+> python extractd/extractd.py --host <hostIP> --user <username> --password <password>
 ```
 
 ### Executing tests
