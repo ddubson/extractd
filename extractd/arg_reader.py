@@ -1,7 +1,6 @@
 import getopt
 import sys
 
-
 class ArgReader:
     def __init__(self):
         self._host = ''
@@ -12,7 +11,7 @@ class ArgReader:
         try:
             opts, args = getopt.getopt(argv, 'h:u:p:', ["host=", "user=", "password=", "help"])
         except getopt.GetoptError, e:
-            print 'host (-h) is required.'
+            print e
             sys.exit(2)
 
         for opt, arg in opts:
