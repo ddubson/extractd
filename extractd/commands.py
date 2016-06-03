@@ -1,10 +1,15 @@
 __name__ = "commands"
 
 
-commands = {'cpu', 'help', 'hostname', 'quit'}
+commandDictionary = {
+    "cpu": "cat /proc/cpuinfo | grep 'model name' | cut -d':' -f2",
+    "help": "help",
+    "hostname": "hostname",
+    "quit": "quit"
+}
 
 
 def print_available_commands():
     print "Currently supported commands: "
-    for cmd in reversed(list(commands)):
-        print "- " + cmd
+    for k, v in commandDictionary.iteritems():
+        print "- " + k

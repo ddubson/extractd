@@ -3,7 +3,7 @@ import paramiko
 import signal
 from server import Server
 from arg_reader import ArgReader
-from commands import print_available_commands
+from commands import print_available_commands, commandDictionary
 import socket
 
 ssh = paramiko.SSHClient()
@@ -12,7 +12,6 @@ ssh = paramiko.SSHClient()
 def repl(ssh, server):
     while True:
         com = raw_input(server.username + "@" + server.host + " $> ")
-        rawCom = com
         if com == 'quit':
             signal_handler('', '')
 
@@ -20,10 +19,7 @@ def repl(ssh, server):
             print_available_commands()
             continue
 
-        if com == 'cpu':
-            rawCom = "cat /proc/cpuinfo | grep 'model name' | cut -d':' -f2"
-
-        stdin, stdout, stderr = ssh.exec_command(rawCom)
+        stdin, stdout, stderr = ssh.exec_command(commandDictionary.get(com))
 
         if com == 'hostname':
             hostname = stdout.read()
