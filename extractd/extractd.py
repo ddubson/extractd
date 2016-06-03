@@ -8,16 +8,31 @@ import socket
 ssh = paramiko.SSHClient()
 
 
-def repl(ssh, host):
+def repl(ssh, server):
     while True:
-        com = raw_input(host + " $> ")
+        com = raw_input(server.username + "@" + server.host + " $> ")
+        rawCom = com
         if com == 'quit':
             signal_handler('', '')
 
-        stdin, stdout, stderr = ssh.exec_command(com)
+        if com == 'help':
+            print "Currently supported commands: "
+            print "- cpu"
+            print "- hostname"
+            print "- quit"
+            continue
+
+        if com == 'cpu':
+            rawCom = "cat /proc/cpuinfo | grep 'model name' | cut -d':' -f2"
+
+        stdin, stdout, stderr = ssh.exec_command(rawCom)
 
         if com == 'hostname':
-            print stdout.read()
+            hostname = stdout.read()
+            print "Hostname for this instance is: " + hostname
+        elif com == 'cpu':
+            cpuFam = stdout.read()
+            print "Processor Model is " + cpuFam.strip()
         else:
             print stdout.readlines()
 
@@ -36,12 +51,15 @@ def main(argv):
         print "Attempting to connect to " + server.host
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname=server.host, username=server.username, password=server.password)
+        print "..."
     except socket.error, e:
         print "Could not connect to server"
         sys.exit(1)
 
     print "Connected."
-    repl(ssh, server.host)
+    print "-- Type 'quit' to disconnect."
+    print "-- Type 'help' for list of commands."
+    repl(ssh, server)
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
