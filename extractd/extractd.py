@@ -3,6 +3,7 @@ import paramiko
 import signal
 from server import Server
 from arg_reader import ArgReader
+from commands import print_available_commands
 import socket
 
 ssh = paramiko.SSHClient()
@@ -16,10 +17,7 @@ def repl(ssh, server):
             signal_handler('', '')
 
         if com == 'help':
-            print "Currently supported commands: "
-            print "- cpu"
-            print "- hostname"
-            print "- quit"
+            print_available_commands()
             continue
 
         if com == 'cpu':
