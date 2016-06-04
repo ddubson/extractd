@@ -1,6 +1,7 @@
 import getopt
 import sys
 
+
 class ArgReader:
     def __init__(self):
         self._host = ''
