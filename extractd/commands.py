@@ -8,6 +8,12 @@ commandDictionary = {
     "quit": "quit"
 }
 
+profiles = {
+    "debian": {
+        "os": "lsb_release -a"
+    }
+}
+
 
 def print_available_commands():
     print "Currently supported commands: "

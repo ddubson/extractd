@@ -8,6 +8,7 @@ setup(
     author="Dmitriy Dubson",
     author_email="d.dubson@gmail.com",
     install_requires=[
-        "sshtunnel"
+        "sshtunnel",
+        "nose"
     ]
 )

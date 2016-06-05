@@ -1,15 +1,20 @@
 import sys
+from multiprocessing.pool import Pool
+
 import paramiko
 import signal
 from server import Server
 from arg_reader import ArgReader
-from commands import print_available_commands, commandDictionary
+from commands import print_available_commands, commandDictionary, profiles
 import socket
 
 ssh = paramiko.SSHClient()
 
 
 def repl(ssh, server):
+    stdin, stdout, stderr = ssh.exec_command(profiles.get("debian").get("os"))
+    print stdout.read()
+
     while True:
         com = raw_input(server.username + "@" + server.host + " $> ")
         if com == 'quit':
@@ -53,6 +58,7 @@ def main(argv):
     print "Connected."
     print "-- Type 'quit' to disconnect."
     print "-- Type 'help' for list of commands."
+    print "------------------------------------"
     repl(ssh, server)
 
 if __name__ == "__main__":
