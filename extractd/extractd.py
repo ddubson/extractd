@@ -12,6 +12,7 @@ ssh = paramiko.SSHClient()
 
 
 def repl(ssh, server):
+    ssh.exec_command("mkdir -p ~/.extractd && chmod +w ~/.extractd")
     stdin, stdout, stderr = ssh.exec_command(profiles.get("debian").get("os"))
     print stdout.read()
 
@@ -24,16 +25,18 @@ def repl(ssh, server):
             print_available_commands()
             continue
 
-        stdin, stdout, stderr = ssh.exec_command(commandDictionary.get(com))
+        rawCom = commandDictionary.get(com)
+        if rawCom is None:
+            print "Command '" + com + "' is not a valid command."
+            continue
+
+        stdin, stdout, stderr = ssh.exec_command(rawCom)
 
         if com == 'hostname':
             hostname = stdout.read()
             print "Hostname for this instance is: " + hostname
-        elif com == 'cpu':
-            cpuFam = stdout.read()
-            print "Processor Model is " + cpuFam.strip()
         else:
-            print stdout.readlines()
+            print stdout.read()
 
 
 def signal_handler(signal, frame):
