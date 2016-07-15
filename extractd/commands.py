@@ -9,6 +9,7 @@ cpu_command = "rm -f {0} && echo -n \"Processor Family: \" >> {0} && \
         echo -n \"CPU Core Count: \" >> {0} && \
         cat /proc/cpuinfo | grep \"cpu cores\" | uniq | cut -d':' -f2 >> {0} && \
         cat {0}".format(cpu_file)
+disk_command = "df -h"
 
 profiles = {
     "debian": {
@@ -20,6 +21,7 @@ profiles = {
 }
 
 commandDictionary = {
+    "disk": disk_command,
     "cpu": cpu_command,
     "help": "help",
     "hostname": "hostname",
