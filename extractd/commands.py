@@ -2,6 +2,13 @@ __name__ = "commands"
 
 extractd_dir = "~/.extractd"
 cpu_file = extractd_dir + "/cpu.ex"
+cpu_command = "rm -f {0} && echo -n \"Processor Family: \" >> {0} && \
+        cat /proc/cpuinfo | grep 'model name' | cut -d':' -f2 >> {0} && \
+        echo -n \"Physical CPU Count: \" >> {0} && \
+        cat /proc/cpuinfo | grep 'physical id' | sort | uniq | wc -l >> {0} && \
+        echo -n \"CPU Core Count: \" >> {0} && \
+        cat /proc/cpuinfo | grep \"cpu cores\" | uniq | cut -d':' -f2 >> {0} && \
+        cat {0}".format(cpu_file)
 
 profiles = {
     "debian": {
@@ -13,14 +20,7 @@ profiles = {
 }
 
 commandDictionary = {
-    "cpu":
-        "rm -f " + cpu_file + " && echo -n \"Processor Family: \" >> " + cpu_file + " && \
-        cat /proc/cpuinfo | grep 'model name' | cut -d':' -f2 >> " + cpu_file + " && \
-        echo -n \"Physical CPU Count: \" >> " + cpu_file + " && \
-        cat /proc/cpuinfo | grep 'physical id' | sort | uniq | wc -l >> " + cpu_file + " && \
-        echo -n \"CPU Core Count: \" >> " + cpu_file + " && \
-        cat /proc/cpuinfo | grep \"cpu cores\" | uniq | cut -d':' -f2 >> " + cpu_file + " && \
-        cat " + cpu_file,
+    "cpu": cpu_command,
     "help": "help",
     "hostname": "hostname",
     "os": profiles.get("debian").get("os"),
