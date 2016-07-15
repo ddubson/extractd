@@ -1,5 +1,4 @@
 import sys
-from multiprocessing.pool import Pool
 
 import paramiko
 import signal
@@ -17,7 +16,7 @@ def repl(ssh, server):
     print stdout.read()
 
     while True:
-        com = raw_input(server.username + "@" + server.host + " $> ")
+        com = raw_input("{0}@{1} $> ".format(server.username, server.host))
         if com == 'quit':
             signal_handler('', '')
 
@@ -27,14 +26,14 @@ def repl(ssh, server):
 
         rawCom = commandDictionary.get(com)
         if rawCom is None:
-            print "Command '" + com + "' is not a valid command."
+            print "Command '{0}' is not a valid command.".format(com)
             continue
 
         stdin, stdout, stderr = ssh.exec_command(rawCom)
 
         if com == 'hostname':
             hostname = stdout.read()
-            print "Hostname for this instance is: " + hostname
+            print "Hostname for this instance is: {0}".format(hostname)
         else:
             print stdout.read()
 
